@@ -1,9 +1,21 @@
+import axios from "axios";
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+// axios
+//   .get('https://api.github.com/users/john-chamberlin')
+//   .then((res) =>{
+//     console.log(res.data);
+//     const dataObj = res.data;
+//     createCard(dataObj);
+//     cards.appendChild
+//   })
+//   .catch(err => {
+//     console.log('no data! sucks for u!')
+//   })
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,7 +40,20 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd','bigknell'];
+
+followersArray.forEach(item =>{
+  axios
+  .get(`https://api.github.com/users/${item}`)
+  .then((res) =>{
+    console.log(res.data);
+    const dataObj = res.data;
+    cards.appendChild(createCard(dataObj))
+  })
+  .catch(err => {
+    console.log('no data! sucks for u!')
+  })
+})
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,6 +74,64 @@ const followersArray = [];
       </div>
     </div>
 */
+const cards = document.querySelector('.cards');
+
+function createCard(obj){
+  const card = document.createElement('div');
+  const img = document.createElement('img');
+  const cardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileLink = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
+
+
+  card.appendChild(img);
+  card.appendChild(cardInfo);
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  profile.appendChild(profileLink);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+
+  card.classList.add('card');
+  cardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username');
+
+
+  img.src = obj.avatar_url;
+  name.textContent = obj.name;
+  userName.textContent = obj.login;
+  location.textContent = obj.location;
+  profileLink.textContent = obj.html_url;
+  followers.textContent = obj.followers;
+  following.textContent = obj.following;
+  bio.textContent = obj.bio;
+
+return card;
+}
+
+
+axios
+  .get('https://api.github.com/users/john-chamberlin')
+  .then((res) =>{
+    console.log(res.data);
+    const dataObj = res.data;
+    cards.appendChild(createCard(dataObj))
+  })
+  .catch(err => {
+    console.log('no data! sucks for u!')
+  })
+
+
 
 /*
   List of LS Instructors Github username's:
